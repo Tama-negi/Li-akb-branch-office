@@ -1,0 +1,135 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+     "variables": {
+        "resourcegroupename": "RG–¼",
+        "location": "japaneast",
+
+        "vmName": "VM–¼",
+  	    "vmSize": "Standard_B2s",
+       
+        "adminUsername": "User Name",
+        "adminPassword": "Password",
+
+        "publisher": "MicrosoftSQLServer",
+        "offer": "SQL2008R2SP3-WS2008R2SP1",
+        "sku": "Standard",
+
+        "nicName": "[concat(variables('vmName'),'_nic')]",
+        "addressPrefix": "XXX.XXX.XXX.XXX/XX",
+        "subnetName": "SubnetName",
+        "subnetPrefix": "XXX.XXX.XXX.XXX/XX",
+        "virtualNetworkName": "VNET-NAME",
+        "subnetRef": "[resourceId('Microsoft.Network/virtualNetworks/subnets', variables('virtualNetworkName'), variables('subnetName'))]",
+
+        "diskName": "[concat(variables('vmName'),'_os_disk')]",
+        "DatadiskName": "[concat(variables('vmName'),'_Data_disk')]",
+        "storageAccountType": "Standard_LRS",
+     
+        "storageAccountName": "Storage Account Name"
+
+    },
+    "resources": [
+             {
+            "type": "Microsoft.Network/virtualNetworks",
+            "apiVersion": "2018-11-01",
+            "name": "[variables('virtualNetworkName')]",
+            "location": "[variables('location')]",
+            "properties": {
+                "addressSpace": {
+                    "addressPrefixes": [
+                        "[variables('addressPrefix')]"
+                    ]
+                },
+                "subnets": [
+                    {
+                        "name": "[variables('subnetName')]",
+                        "properties": {
+                            "addressPrefix": "[variables('subnetPrefix')]"
+                        }
+                    }
+                ]
+            }
+        },
+        {
+            "type": "Microsoft.Network/networkInterfaces",
+            "apiVersion": "2018-11-01",
+            "name": "[variables('nicName')]",
+            "location": "[variables('location')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Network/virtualNetworks/', variables('virtualNetworkName'))]"
+            ],
+            "properties": {
+                "ipConfigurations": [
+                    {
+                        "name": "ipconfig1",
+                        "properties": {
+                            "privateIPAllocationMethod": "Dynamic",
+                            "subnet": {
+                                "id": "[variables('subnetRef')]"
+                            }
+                        }
+                    }
+                ]
+            }
+        },
+        {
+            "type": "Microsoft.Compute/virtualMachines",
+            "apiVersion": "2018-10-01",
+            "name": "[variables('vmName')]",
+            "location": "[variables('location')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Network/networkInterfaces/', variables('nicName'))]"
+            ],
+            "properties": {
+                "hardwareProfile": {
+                    "vmSize": "[variables('vmSize')]"
+                },
+                "osProfile": {
+                    "computerName": "[variables('vmName')]",
+                    "adminUsername": "[variables('adminUsername')]",
+                    "adminPassword": "[variables('adminPassword')]"
+                },
+                "storageProfile": {
+                    "imageReference": {
+                        "publisher": "[variables('publisher')]",
+                        "offer": "[variables('offer')]",
+                        "sku": "[variables('sku')]",
+                        "version": "latest"
+                    },
+                    "osDisk": {
+                        "createOption": "FromImage",
+    					"name": "[variables('diskname')]",
+                        "managedDisk": {
+            				"storageAccountType": "[variables('storageAccountType')]"
+					    }
+                    },
+                    "dataDisks": [
+                        {
+                            "lun": 0,
+                            "name": "[variables('datadiskname')]",
+                            
+                            "createOption": "Empty",
+                            "managedDisk": {
+            				"storageAccountType": "[variables('storageAccountType')]"
+                            },
+                            "diskSizeGB": 128                        }
+                    ]
+                },
+                "networkProfile": {
+                    "networkInterfaces": [
+                        {
+                            "id": "[resourceId('Microsoft.Network/networkInterfaces',variables('nicName'))]"
+                        }
+                    ]
+                },
+                "diagnosticsProfile": {
+                    "bootDiagnostics": {
+                        "enabled": true,
+                         "storageUri": "[concat('https://', variables('storageAccountName'), '.blob.core.windows.net')]"
+                    }
+                }
+            }
+        }
+    ] 
+}
