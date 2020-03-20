@@ -3,7 +3,7 @@
   "contentVersion": "1.0.0.0",
   
   "variables": {
-    "actionGroupName": "アクショングループ名",　　
+    "actionGroupName": "アクショングループ名",
     "actionGroupShortName": "短い名前",
     "OperationName": "操作名",
     "emailAddress": "送信先の電子メールアドレス"
