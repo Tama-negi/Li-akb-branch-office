@@ -1,0 +1,44 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "workflows_LogicApp_name": {
+            "type": "String",
+            "metadata": {}
+        },
+        "location": {
+            "type": "String",
+            "defaultValue": "japaneast",
+            "metadata":{} 
+        },
+        "tag": {
+            "type": "String",
+            "defaultValue":"notag",
+            "metadata":{} 
+        }
+    },
+    "variables": {},
+    "resources": [
+        {
+            "type": "Microsoft.Logic/workflows",
+            "apiVersion": "2017-07-01",
+            "name": "[parameters('workflows_LogicApp_name')]",
+            "location": "[parameters('location')]",
+            "tags": {
+                "division": "[parameters('tag')]"
+            },
+            "properties": {
+                "state": "Enabled",
+                "definition": {
+                    "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+                    "contentVersion": "1.0.0.0",
+                    "parameters": {},
+                    "triggers": {},
+                    "actions": {},
+                    "outputs": {}
+                },
+                "parameters": {}
+            }
+        }
+    ]
+}
