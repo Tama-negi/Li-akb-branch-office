@@ -1,0 +1,70 @@
+{
+    "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "vnetName": {
+        "type": "string",
+        "defaultValue": "VNet1",
+        "metadata": {}
+        },
+        "location": {
+            "type": "string",
+            "metadata":{} 
+        },
+        "addressSpaces": {
+            "type": "string",
+            "metadata":{} 
+        },
+        "subnet_name": {
+            "type": "string",
+            "metadata":{} 
+        },
+        "subnet_addressRange": {
+            "type": "string",
+            "metadata":{} 
+        },
+        "tag_name": {
+            "type": "string",
+            "defaultValue": "notag",
+            "metadata":{} 
+        },
+        "tag_value": {
+            "type": "string",
+            "defaultValue": "notag",
+            "metadata":{} 
+        }
+    },
+    "variables": {},
+    "resources": [
+        {
+            "type": "Microsoft.Network/VirtualNetworks",
+            "apiVersion": "2019-09-01",
+            "name": "[parameters('vnetName')]",
+            "location": "[parameters('location')]",
+            "tags":  {
+                "[parameters('tag_name')]":"[parameters('tag_value')]"
+            },
+            "properties": {
+                "addressSpace": {
+                    "addressPrefixes": [
+                       "[parameters('addressSpaces')]"
+               ]
+            }
+        },
+      "resources": [
+        {
+            "type": "subnets",
+            "apiVersion": "2018-10-01",
+            "location": "[parameters('location')]",
+            "name": "[parameters('subnet_name')]",
+            "dependsOn": [
+                "[parameters('vnetName')]"
+            ],
+            "properties": {
+                "addressPrefix": "[parameters('subnet_addressRange')]"
+           }
+        }
+      ]
+    }
+  ]
+}

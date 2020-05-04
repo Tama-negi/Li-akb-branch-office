@@ -1,0 +1,2 @@
+ResourceGroupName,location,vnetName,addressSpaces,subnet_name,subnet_addressRange,tag_name,tag_value
+test-rg,japaneast,test-vnet,192.168.0.0/16,test-subnet,192.168.1.0/24,tag-name,tag-value
