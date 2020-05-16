@@ -1,0 +1,49 @@
+{
+    "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "location": {
+            "type": "string",
+            "metadata":{} 
+        },
+        "vnetName": {
+            "type": "string",
+            "metadata": {}
+        },
+        "subnet_name": {
+            "type": "string",
+            "metadata":{} 
+        },
+        "subnet_addressRange": {
+            "type": "string",
+            "metadata":{} 
+        },
+        "NSG_Name": {
+            "type": "string",
+            "metadata":{}
+        }
+    },
+        "variables": {
+            "NSG_ID":"[resourceId('Microsoft.Network/networkSecurityGroups', parameters('NSG_Name'))]",
+            "privateEndpointNetworkPolicies":"Enabled",
+            "privateLinkServiceNetworkPolicies":"Enabled"
+        },
+        "resources": [
+        {
+            "type": "Microsoft.Network/virtualNetworks/subnets",
+            "apiVersion": "2018-10-01",
+            "location": "[parameters('location')]",
+            "name": "[concat(parameters('vnetName') ,'/',parameters('subnet_name'))]",
+            "properties": {
+                "addressPrefix": "[parameters('subnet_addressRange')]",
+                "networkSecurityGroup": {
+                                "id": "[variables('NSG_ID')]"
+                                },
+                            "serviceEndpoints": [],
+                            "delegations": [],
+                            "privateEndpointNetworkPolicies": "[variables('privateEndpointNetworkPolicies')]",
+                            "privateLinkServiceNetworkPolicies": "[variables('privateLinkServiceNetworkPolicies')]"
+                            }
+        }        
+    ]
+}
