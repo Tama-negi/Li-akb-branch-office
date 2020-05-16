@@ -1,0 +1,3 @@
+ResourceGroupName,location,vnetName,subnet_name,subnet_addressRange,NSG_name,
+デプロイ先RG名,リージョン名,仮想ネットワーク名,サブネット名,サブネットのアドレスレンジ,ネットワークセキュリティグループ名,
+RG-1,japaneast,VNET-Name,Snbnet-Name,192.168.1.0/24,NSG-Name,
