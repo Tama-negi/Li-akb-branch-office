@@ -1,0 +1,3 @@
+ResourceGroupName,location,publicIPAddresses_name,domainNameLabel,publicIPAllocationMethod,
+RG1,japanwest,pubip-01,pubip-dnsname-01,Dynamic,
+RG2,japanwest,pubip-02,pubip-dnsname-02,Static,
