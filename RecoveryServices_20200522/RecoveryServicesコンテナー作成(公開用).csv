@@ -1,0 +1,3 @@
+ResourceGroupName,location,vaultName,changeStorageType,vaultStorageType
+RG1,japaneast,rsc-01,true,LocallyRedundant
+RG2,japanwest,rsc-02,false,GloballyRedundant
