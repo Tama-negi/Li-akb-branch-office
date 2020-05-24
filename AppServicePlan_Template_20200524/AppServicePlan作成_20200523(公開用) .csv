@@ -1,0 +1,3 @@
+ResourceGroupName,location,AppServicePlanName,sku,skucode,reserved,kind,
+RG1,japaneast,app-service-plan-001,Basic,B1,true,linux,
+RG2,japaneast,app-service-plan-002,Standard,S1,false,app,

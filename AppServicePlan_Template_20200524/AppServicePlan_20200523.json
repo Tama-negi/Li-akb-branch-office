@@ -1,0 +1,62 @@
+{
+    "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "AppServicePlanName": {
+            "type": "string"
+        },
+        "location": {
+            "defaultValue": "[resourceGroup().location]",
+            "type": "string"
+        },
+        "sku": {
+            "defaultValue": "Basic",
+            "type": "string",
+            "allowedValues": [
+                "Basic",
+                "Standard",
+                "PremiumV2"
+                ]
+        },
+        "skucode": {
+            "defaultValue": "B1",
+            "type": "string",
+            "allowedValues": [
+                "B1","B2","B3",
+                "S1","S2","S3",
+                "P1v2","P2v2","P3v2"
+                ]
+        },
+        "reserved": {
+            "defaultValue": "true",
+            "type": "bool",
+            "metadata": {}
+        },
+        "kind": {
+            "type": "string",
+            "allowedValues": [
+                "linux",
+                "app"
+                ]
+        }
+     },
+    "variables": {},
+    "resources": [
+        {
+            "apiVersion": "2018-11-01",
+            "type": "Microsoft.Web/serverfarms",
+            "name": "[parameters('AppServicePlanName')]",
+            "location": "[parameters('location')]",
+            "kind": "[parameters('kind')]",
+            "tags": {},
+            "properties": {
+                "name": "[parameters('AppServicePlanName')]",
+                "reserved": "[parameters('reserved')]"
+            },
+            "sku": {
+                "Tier": "[parameters('sku')]",
+                "Name": "[parameters('skuCode')]"
+            }
+        }
+    ]
+}
