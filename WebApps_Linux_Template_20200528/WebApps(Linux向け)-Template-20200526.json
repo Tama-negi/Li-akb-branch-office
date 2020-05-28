@@ -1,0 +1,101 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "webAppName": {
+        "type": "string",
+        "defaultValue" : "AzureLinuxApp",
+        "metadata": {},
+        "minLength": 2
+    },
+    "appServicePlanName":{
+        "type": "string",
+        "defaultValue" :"[concat('AppServicePlan-', parameters('webAppName'))]",
+        "metadata": {}
+    },
+    "sku": {
+        "defaultValue": "Basic",
+        "type": "string",
+        "allowedValues": [
+            "Basic",
+            "Standard",
+            "PremiumV2"
+        ]
+    },
+    "skucode": {
+        "defaultValue": "B1",
+        "type": "string",
+        "allowedValues": [
+            "B1","B2","B3",
+            "S1","S2","S3",
+            "P1v2","P2v2","P3v2"
+        ]
+    },
+    "reserved": {
+            "defaultValue": "true",
+            "type": "bool",
+            "metadata": {}
+    },
+    "kind": {
+            "type": "string",
+            "allowedValues": [
+                "linux",
+                "app"
+                ]
+     },
+    "linuxFxVersion" : {
+        "type": "string",
+        "defaultValue" : "PHP|7.3",
+        "metadata": {}
+    },
+    "location": {
+      "type": "string",
+      "defaultValue": "[resourceGroup().location]",
+      "metadata": {
+      }
+    },
+    "newOrExisting": {
+        "type": "string",
+        "allowedValues": [
+            "new",
+            "existing"
+            ]
+    }
+  },
+  "variables": {},
+   "resources": [
+        {
+    "condition": "[equals(parameters('newOrExisting'), 'new')]",
+    "apiVersion": "2018-11-01",
+            "type": "Microsoft.Web/serverfarms",
+            "name": "[parameters('AppServicePlanName')]",
+            "location": "[parameters('location')]",
+            "kind": "[parameters('kind')]",
+            "tags": {},
+            "properties": {
+                "name": "[parameters('AppServicePlanName')]",
+                "reserved": "[parameters('reserved')]"
+            },
+            "sku": {
+                "Tier": "[parameters('sku')]",
+                "Name": "[parameters('skuCode')]"
+            }
+        },
+        {
+      "type": "Microsoft.Web/sites",
+      "apiVersion": "2018-11-01",
+      "name": "[parameters('webAppName')]",
+      "location": "[parameters('location')]",
+      "kind": "linux,app",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/serverfarms', parameters('appServicePlanName'))]"
+      ],
+      "properties": {
+        "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', parameters('appServicePlanName'))]",
+        "siteConfig": {
+            "linuxFxVersion": "[parameters('linuxFxVersion')]"
+          }
+      }
+    }
+  ]
+}

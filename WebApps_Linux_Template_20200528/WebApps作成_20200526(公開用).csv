@@ -1,0 +1,3 @@
+ResourceGroupName,location,webAppName,AppServicePlanName,sku,skucode,reserved,kind,RuntimeStackVersion,newOrExisting
+RG1,japaneast,wbapps-01,app-service-plan-002,Basic,B1,true,linux,PHP|7.3,new
+RG1,japaneast,wbapps-02,app-service-plan-002,Basic,B1,true,linux,PHP|7.3,existing
