@@ -1,0 +1,121 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "serverName": {
+            "type": "string",
+            "minLength":3,
+            "maxLength":63
+        },
+        "administratorLogin": {
+            "type": "string",
+            "minLength":1,
+            "maxLength":16
+        },
+        "administratorLoginPassword": {
+            "type": "securestring"
+        },
+        "location": {
+            "type": "string",
+            "defaultValue": "japaneast"
+        },
+        "skuCapacity": {
+            "type": "int",
+            "defaultValue": 1
+        },
+        "skuName": {
+            "type": "string",
+            "defaultValue": "B_Gen5_1"
+        },
+        "skuSizeMB": {
+            "type": "int",
+            "defaultValue": 5120
+        },
+        "skuTier": {
+            "type": "string",
+            "defaultValue": "Basic",
+            "allowedValues": [
+                "Basic",
+                "GeneralPurpose",
+                "MemoryOptimize"
+            ]
+        },
+        "version": {
+            "type": "string",
+            "defaultValue": "10.3",
+            "allowedValues": [
+                "10.2",
+                "10.3"
+            ]
+        },
+        "backupRetentionDays": {
+            "type": "int",
+            "defaultValue": 7
+        },
+        "geoRedundantBackup": {
+            "type": "string",
+            "defaultValue": "Disabled",
+           "allowedValues": [
+                "Disabled",
+                "Enabled"
+            ]
+        },
+        "storageAutoGrow": {
+            "type": "string",
+            "defaultValue": "Disabled",
+           "allowedValues": [
+                "Disabled",
+                "Enabled"
+            ]
+        },
+        "sslEnforcement": {
+            "type": "string",
+            "defaultValue": "Disabled",
+            "allowedValues": [
+                "Disabled",
+                "Enabled"
+            ]
+        },
+        "infrastructureEncryption": {
+            "type": "string",
+            "defaultValue": "Disabled",
+            "allowedValues": [
+                "Disabled",
+                "Enabled"
+            ]
+        }
+    },
+    "variables": {
+        "skuFamily":"Gen5"
+    },    
+    "resources": [
+        {
+            "apiVersion": "2018-06-01-preview",
+            "kind": "",
+            "location": "[parameters('location')]",
+            "name": "[parameters('serverName')]",
+            "properties": {
+                "version": "[parameters('version')]",
+                "administratorLogin": "[parameters('administratorLogin')]",
+                "administratorLoginPassword": "[parameters('administratorLoginPassword')]",
+                "storageProfile": {
+                    "storageMB": "[parameters('skuSizeMB')]",
+                    "backupRetentionDays": "[parameters('backupRetentionDays')]",
+                    "geoRedundantBackup": "[parameters('geoRedundantBackup')]",
+                    "storageAutoGrow": "[parameters('storageAutoGrow')]"
+                },
+                "sslEnforcemen": "[parameters('sslEnforcement')]",
+                "infrastructureEncryption": "[parameters('infrastructureEncryption')]"
+            },
+            "sku": {
+                "name": "[parameters('skuName')]",
+                "tier": "[parameters('skuTier')]",
+                "capacity": "[parameters('skuCapacity')]",
+                "size": "[parameters('skuSizeMB')]",
+                "family": "[variables('skuFamily')]"
+            },
+            "tags": {},
+            "type": "Microsoft.DBforMariaDB/servers"
+        }
+    ]
+}

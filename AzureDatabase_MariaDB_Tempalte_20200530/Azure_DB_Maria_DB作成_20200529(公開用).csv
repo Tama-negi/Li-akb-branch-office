@@ -1,0 +1,2 @@
+ResourceGroupName,location,serverName,administratorLogin,administratorLoginPassword,skuName,skuSizeMB,skuTier,version,backupRetentionDays,geoRedundantBackup,storageAutoGrow,sslEnforcement,infrastructureEncryption
+RG1,japaneast,mariadb-01,mariadatabaseadmin,mariadbadminpassword,B_Gen5_1,5120,Basic,10.3,7,Disabled,Disabled,Enabled,Disabled
