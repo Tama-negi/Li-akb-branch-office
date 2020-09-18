@@ -6,7 +6,7 @@ param (
     [string] [Parameter(Mandatory=$true)]  $Address
     )
 
-$resourceGroupName = "AKBWG-CSP-RG-NW"
+$resourceGroupName = "RGName"
 
 # Get the NSG resource
 $nsg = Get-AzNetworkSecurityGroup -Name $NSGName -ResourceGroupName $resourceGroupName
