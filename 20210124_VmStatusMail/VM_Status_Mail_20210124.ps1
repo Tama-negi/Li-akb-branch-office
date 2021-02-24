@@ -1,4 +1,4 @@
-#VM Stop Disk Type Select
+#VM Status
 Param(
     [parameter(Mandatory=$True)]
     [string]$vmName,
